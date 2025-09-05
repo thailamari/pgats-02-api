@@ -9,7 +9,7 @@ const users = [
     saldo: 10000
   },
   {
-    username: 'priscila', 
+    username: 'thaila', 
     password: bcrypt.hashSync('123456', 8), 
     favorecidos: [ 'julio' ], 
     saldo: 10000
