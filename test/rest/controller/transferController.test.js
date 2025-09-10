@@ -71,14 +71,14 @@ describe('Transfer Controller', () => {
                 .set('Authorization', `Bearer ${token}`)
                 .send({
                     from: "julio",
-                    to: "priscilaaaaaaaaaaa",
+                    to: "thaila",
                     value: 100
                 });
             
             expect(resposta.status).to.equal(201);
             
             // Validação com um Fixture
-            const respostaEsperada = require('../../fixture/respostas/quandoInformoValoresValidosEuTenhoSucessoCom201Created.json')
+            const respostaEsperada = require('../../rest/fixture/respostas/quandoInformoValoresValidosEuTenhoSucessoCom201CreatedController.json')
             delete resposta.body.date;
             delete respostaEsperada.date; 
             expect(resposta.body).to.deep.equal(respostaEsperada);

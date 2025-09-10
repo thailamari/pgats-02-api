@@ -5,7 +5,7 @@ const users = [
   {
     username: 'julio', 
     password: bcrypt.hashSync('123456', 8), 
-    favorecidos: [ 'priscila' ], 
+    favorecidos: [ 'thaila' ], 
     saldo: 10000
   },
   {
