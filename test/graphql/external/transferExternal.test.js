@@ -33,16 +33,6 @@ describe('Transfer Mutation', () => {
              
         });
 
-        it('Sem saldo disponível para transferência', async () =>{
-            createTransfer.variables.value = 100001;
-            const resposta = await request(process.env.BASE_URL_GRAPHQL)
-                .post('')
-                .set('Authorization', `Bearer ${token}`)
-                .send(createTransfer);
-
-            expect(resposta.status).to.equal(200);   
-            expect(resposta.body.errors[0].message).to.equal("Saldo insuficiente");     
-        });
 
          it('Token de autenticação não informado', async () =>{
             const tokenInvalido = '123456'
@@ -54,5 +44,22 @@ describe('Transfer Mutation', () => {
             expect(resposta.status).to.equal(200);   
             expect(resposta.body.errors[0].message).to.equal("Autenticação obrigatória");     
         });
+
+        const testesDeErroDeNegocio = require('../fixture/request/tranferencia/createTransferWithError.json');
+        testesDeErroDeNegocio.forEach(teste =>{
+          it(`Testando a regra relacionada a ${teste.nomeDoTeste}`, async () =>{
+            createTransfer.variables.value = 100001;
+            const resposta = await request(process.env.BASE_URL_GRAPHQL)
+                .post('')
+                .set('Authorization', `Bearer ${token}`)
+                .send(teste.createTransfer);
+
+            expect(resposta.status).to.equal(200);   
+            expect(resposta.body.errors[0].message).to.equal(teste.mensagemEsperada);     
+        });
+
+        });
+
+
     });
 });
