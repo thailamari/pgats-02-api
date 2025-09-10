@@ -1,18 +1,17 @@
 const request = require('supertest');
 const sinon = require('sinon');
 const { expect, use } = require('chai');
-
 const chaiExclude = require('chai-exclude');
 use(chaiExclude);
-
+require('dotenv').config();
 
 describe('Transfer Mutation', () => {
         describe('POST /transfers', () =>{   
             
             before(async() =>{
             const loginUser = require('../fixture/request/login/loginUser.json');
-            const respostaLogin = await request('http://localhost:4000')
-            .post('/graphql')
+            const respostaLogin = await request(process.env.BASE_URL_GRAPHQL)
+            .post('')
             .send(loginUser);
 
              token = respostaLogin.body.data.loginUser.token;
@@ -25,8 +24,8 @@ describe('Transfer Mutation', () => {
 
         it('Transferência com sucesso', async () =>{
             const respostaEsperada = require('../fixture/request/respostas/transferencia/tranferenciaComSucesso.json')
-            const resposta = await request('http://localhost:4000')
-                .post('/graphql')
+            const resposta = await request(process.env.BASE_URL_GRAPHQL)
+                .post('')
                 .set('Authorization', `Bearer ${token}`)
                 .send(createTransfer);
             expect(resposta.status).to.equal(200);  
@@ -36,8 +35,8 @@ describe('Transfer Mutation', () => {
 
         it('Sem saldo disponível para transferência', async () =>{
             createTransfer.variables.value = 100001;
-            const resposta = await request('http://localhost:4000')
-                .post('/graphql')
+            const resposta = await request(process.env.BASE_URL_GRAPHQL)
+                .post('')
                 .set('Authorization', `Bearer ${token}`)
                 .send(createTransfer);
 
@@ -47,8 +46,8 @@ describe('Transfer Mutation', () => {
 
          it('Token de autenticação não informado', async () =>{
             const tokenInvalido = '123456'
-            const resposta = await request('http://localhost:4000')
-                .post('/graphql')
+            const resposta = await request(process.env.BASE_URL_GRAPHQL)
+                .post('')
                 .set('Authorization', `Bearer ${tokenInvalido}`)
                 .send(createTransfer);
 
